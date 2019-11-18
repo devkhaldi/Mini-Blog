@@ -13,12 +13,9 @@ class AddForeignMedias extends Migration
      */
     public function up()
     {
-        Schema::table('medias', function (Blueprint $table) {
-            $table->bigInteger('user_id')->unsigned() ;
+        Schema::table('media', function (Blueprint $table) {
             $table->bigInteger('post_id')->unsigned() ;
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade') ;
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade')->onUpdate('cascade') ;
-            
         });
     }
 
@@ -29,7 +26,7 @@ class AddForeignMedias extends Migration
      */
     public function down()
     {
-        Schema::table('medias', function (Blueprint $table) {
+        Schema::table('media', function (Blueprint $table) {
             $table->dropForeign(['post_id'] ) ;
             $table->dropColumn('post_id') ;
         });
