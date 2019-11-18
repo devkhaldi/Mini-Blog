@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index','show') ;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -94,20 +98,24 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, Post $post)
     {
-        $post = Post::find($post->id);
-        $post->title = $request->input('title') ;
-        $post->content = $request->input('content') ;
-        $post->category_id = $request->input('category_id') ;
-        $post->save() ;
+        if(Auth::id() == $post->id) {
 
-        // Save Images 
-        if ($request->hasFile('file')) {
-            $files = $request->file('file') ;
-            foreach ($files as $file) {
-                $media = new Media() ;
-                $media->file = $file->store('media') ;
-                $post->media()->save($media) ;
+            $post = Post::find($post->id);
+            $post->title = $request->input('title') ;
+            $post->content = $request->input('content') ;
+            $post->category_id = $request->input('category_id') ;
+            $post->save() ;
+    
+            // Save Images 
+            if ($request->hasFile('file')) {
+                $files = $request->file('file') ;
+                foreach ($files as $file) {
+                    $media = new Media() ;
+                    $media->file = $file->store('media') ;
+                    $post->media()->save($media) ;
+                }
             }
+            return redirect('/') ; 
         }
         return redirect('/') ; 
     }
