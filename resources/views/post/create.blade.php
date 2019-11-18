@@ -3,6 +3,7 @@
     
 <div class="container">
     <form action="{{route('posts.store')}}" method="POST" class="col-md-6 offset-3" enctype="multipart/form-data">
+        @csrf
         <div class="form-group">
             <label for="title">Enter post title</label>
             <input name="title" id="title" type="text" class="form-control">
@@ -21,7 +22,7 @@
         </div>
         <div class="form-inline">
             <label for="file">Chose post Media</label>
-            <input type="file" name="file" class="form-control" id="file" multiple>
+            <input type="file" name="postFiles[]" class="form-control" id="file" multiple>
         </div>
         <div class="form-group">
             <input type="submit" class="btn btn-success btn-sm"/>

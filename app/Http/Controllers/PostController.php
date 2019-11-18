@@ -27,8 +27,11 @@ class PostController extends Controller
      */
     public function create()
     {
-        $categories = Category::all() ;
-        return view('post.create',['categories'=>$categories]) ;
+        if(Auth::id()) {
+            $categories = Category::all() ;
+            return view('post.create',['categories'=>$categories]) ;
+        }
+        else return redirect('/') ;
     }
 
     /**
@@ -45,16 +48,15 @@ class PostController extends Controller
         $post->user_id = Auth::id() ;
         $post->category_id = $request->input('category_id') ;
         $post->save() ;
-
-        // Save Images 
-        if ($request->hasFile('file')) {
-            $files = $request->file('file') ;
-            foreach ($files as $file) {
-                $media = new Media() ;
-                $media->file = $file->store('media') ;
-                $post->media()->save($media) ;
+        // Save post files 
+            $postFiles = $request->file('postFiles') ;
+            foreach ($postFiles as $postFile) {
+                $postMedia = new Media() ;
+                $postMedia->post_id = $post->id ;
+                $postMedia->file = $postFile->store('media') ;
+                $post->media()->save($postMedia) ;
             }
-        }
+       
         return redirect('/') ; 
     }
 
