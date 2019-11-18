@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Requests\PostRequest;
 use App\Media;
 use App\Post;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
         $post = new Post() ;
         $post->title = $request->input('title') ;
@@ -80,11 +81,8 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $categories = Category::all() ;
-        $post = Post::find($post) ;
-        return view('post.create',[
-                'categories'=>$categories,
-                'post' => $post
-            ]) ;
+        $postdata = Post::find($post->id) ;
+        return view('post.edit',['categories'=>$categories,'post' => $postdata]) ;
     }
 
     /**
@@ -94,12 +92,11 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(PostRequest $request, Post $post)
     {
-        $post = Post::find($post);
+        $post = Post::find($post->id);
         $post->title = $request->input('title') ;
         $post->content = $request->input('content') ;
-        $post->user_id = Auth::id() ;
         $post->category_id = $request->input('category_id') ;
         $post->save() ;
 
