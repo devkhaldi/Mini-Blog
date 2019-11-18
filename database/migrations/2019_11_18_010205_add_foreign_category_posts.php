@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignPosts extends Migration
+class AddForeignCategoryPosts extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,8 @@ class AddForeignPosts extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->bigInteger('user_id')->index()->unsigned() ;
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade') ;
+            $table->bigInteger('category_id')->index()->unsigned() ;
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade') ;
         });
     }
 
@@ -27,8 +27,8 @@ class AddForeignPosts extends Migration
     public function down()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->dropForeign(['user_id'] ) ;
-            $table->dropColumn('user_id') ;
+            $table->dropForeign(['category_id'] ) ;
+            $table->dropColumn('category_id') ;
         });
     }
 }

@@ -14,7 +14,7 @@ class AddForeignMedias extends Migration
     public function up()
     {
         Schema::table('media', function (Blueprint $table) {
-            $table->bigInteger('post_id')->unsigned() ;
+            $table->bigInteger('post_id')->index()->unsigned() ;
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade')->onUpdate('cascade') ;
         });
     }

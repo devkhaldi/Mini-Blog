@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
+use App\Media;
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -14,7 +17,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -24,7 +27,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all() ;
+        return view('post.create',['categories'=>$categories]) ;
     }
 
     /**
@@ -35,7 +39,23 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $post = new Post() ;
+        $post->title = $request->input('title') ;
+        $post->content = $request->input('content') ;
+        $post->user_id = Auth::id() ;
+        $post->category_id = $request->input('category_id') ;
+        $post->save() ;
+
+        // Save Images 
+        if ($request->hasFile('file')) {
+            $files = $request->file('file') ;
+            foreach ($files as $file) {
+                $media = new Media() ;
+                $media->file = $file->store('media') ;
+                $post->media()->save($media) ;
+            }
+        }
+        return redirect('/') ; 
     }
 
     /**
@@ -46,7 +66,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('post.show',['post'=>Post::find($post) ]) ;
     }
 
     /**
@@ -57,7 +77,12 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $categories = Category::all() ;
+        $post = Post::find($post) ;
+        return view('post.create',[
+                'categories'=>$categories,
+                'post' => $post
+            ]) ;
     }
 
     /**
@@ -69,7 +94,23 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $post = Post::find($post);
+        $post->title = $request->input('title') ;
+        $post->content = $request->input('content') ;
+        $post->user_id = Auth::id() ;
+        $post->category_id = $request->input('category_id') ;
+        $post->save() ;
+
+        // Save Images 
+        if ($request->hasFile('file')) {
+            $files = $request->file('file') ;
+            foreach ($files as $file) {
+                $media = new Media() ;
+                $media->file = $file->store('media') ;
+                $post->media()->save($media) ;
+            }
+        }
+        return redirect('/') ; 
     }
 
     /**
@@ -80,6 +121,6 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete() ;
     }
 }
