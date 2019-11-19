@@ -4,7 +4,15 @@
 <div class="container">
     <form action="{{route('posts.store')}}" method="POST" class="col-md-6 offset-3" enctype="multipart/form-data">
         @csrf
-        
+        @if (count($errors))
+        <div class="alert alert-danger" role="alert">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{$error}}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <div class="form-group">
             <label for="title">Enter post title</label>
             <input name="title" id="title" type="text" class="form-control">

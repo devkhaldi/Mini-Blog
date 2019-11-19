@@ -6,7 +6,6 @@ use App\Category;
 use App\Http\Requests\PostRequest;
 use App\Media;
 use App\Post;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
@@ -61,8 +60,7 @@ class PostController extends Controller
                 $postMedia->file = $postFile->store('media') ;
                 $post->media()->save($postMedia) ;
             }
-       
-        return redirect('/') ; 
+        return redirect('/') ;
     }
 
     /**
@@ -84,9 +82,12 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        $categories = Category::all() ;
-        $postdata = Post::find($post->id) ;
-        return view('post.edit',['categories'=>$categories,'post' => $postdata]) ;
+        if($post->user_id == Auth::id()) {
+            $categories = Category::all() ;
+            $postdata = Post::find($post->id) ;
+            return view('post.edit',['categories'=>$categories,'post' => $postdata]) ;
+        }
+        else return redirect('/') ;
     }
 
     /**
@@ -98,14 +99,13 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, Post $post)
     {
-        if(Auth::id() == $post->id) {
+        if(Auth::id() == $post->user_id) {
 
             $post = Post::find($post->id);
             $post->title = $request->input('title') ;
             $post->content = $request->input('content') ;
             $post->category_id = $request->input('category_id') ;
             $post->save() ;
-    
             // Save Images 
             if ($request->hasFile('file')) {
                 $files = $request->file('file') ;

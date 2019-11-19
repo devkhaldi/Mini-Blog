@@ -1,7 +1,4 @@
 <?php
-
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-
 use App\Category;
 use App\Post;
 use App\User;

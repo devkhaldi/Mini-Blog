@@ -5,6 +5,15 @@
     <form action="{{url('posts/'.$post->id)}}" method="POST" class="col-md-6 offset-3" enctype="multipart/form-data">
         @csrf
         {{ method_field('PUT') }}
+        @if (count($errors))
+        <div class="alert alert-danger" role="alert">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{$error}}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <div class="form-group">
             <label for="title">Enter post title</label>
             <input name="title" value="{{$post->title}}" id="title" type="text" class="form-control">
