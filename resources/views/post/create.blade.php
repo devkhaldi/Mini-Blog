@@ -22,6 +22,10 @@
             <textarea name="content" id="content" class="form-control" rows="10"></textarea>
         </div>
         <div class="form-group">
+            <label for="file">Choose Main post photo</label>
+            <input type="file" name="photo" class="form-control" id="file">
+        </div>
+        <div class="form-group">
             <label for="category">Select post category</label>
             <select name="category_id" class="form-control" id="category">
                 @foreach ($categories as $category)
@@ -29,8 +33,8 @@
                 @endforeach
             </select>
         </div>
-        <div class="form-inline">
-            <label for="file">Chose post Media</label>
+        <div class="form-group">
+            <label for="file">Chose post Medias</label>
             <input type="file" name="postFiles[]" class="form-control" id="file" multiple>
         </div>
         <div class="form-group">

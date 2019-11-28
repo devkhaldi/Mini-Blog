@@ -1,13 +1,22 @@
 @extends('layouts/theme')
 @section('content')
-    
+
+<div class="test">
+    <ul>
+    @foreach ($category->posts as $post)
+        <li>{{$post->title}}</li>
+    @endforeach
+    </ul>
+
+</div>
+
 <div class="py-5 bg-light">
     <div class="container">
       <div class="row">
         <div class="col-md-6">
           <span>Category</span>
-          <h3>Sports</h3>
-          <p>Category description here.. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam error eius quo, officiis non maxime quos reiciendis perferendis doloremque maiores!</p>
+          <h3>{{$category->name}}</h3>
+          <p>{{$category->description}}</p>
         </div>
       </div>
     </div>
@@ -16,6 +25,8 @@
   <div class="site-section bg-white">
     <div class="container">
       <div class="row">
+
+        <!-- Posts  -->
         <div class="col-lg-4 mb-4">
           <div class="entry2">
             <a href="single.html"><img src="images/img_1.jpg" alt="Image" class="img-fluid rounded"></a>
@@ -35,6 +46,7 @@
           </div>
         </div>
         
+        <!--End Posts  -->
         
       </div>
       <div class="row text-center pt-5 border-top">

@@ -49,6 +49,11 @@ class PostController extends Controller
         $post = new Post() ;
         $post->title = $request->input('title') ;
         $post->content = $request->input('content') ;
+
+        if($request->hasFile('photo')) {
+            $post->photo = $request->input('photo') ;
+        }
+
         $post->user_id = Auth::id() ;
         $post->category_id = $request->input('category_id') ;
         $post->save() ;
@@ -104,8 +109,12 @@ class PostController extends Controller
             $post = Post::find($post->id);
             $post->title = $request->input('title') ;
             $post->content = $request->input('content') ;
+            if( $request->hasFile('photo') ) {
+                $post->photo = $request->input('photo') ;
+            }
             $post->category_id = $request->input('category_id') ;
             $post->save() ;
+            
             // Save Images 
             if ($request->hasFile('file')) {
                 $files = $request->file('file') ;
